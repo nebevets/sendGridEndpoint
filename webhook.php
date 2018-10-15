@@ -3,7 +3,7 @@
 require_once('credentials.php');
 error_log('squirrelly'.print_r($_POST, true));
 
-//$_POST['html']=addslashes($_POST['html']);
+$_POST['html']=addslashes($_POST['html']);
 
 $query = `INSERT INTO receivedEmail SET subject='{$_POST['subject']}',
           emailText='{$_POST['text']}', htmlSource='{$_POST['html']}', 
