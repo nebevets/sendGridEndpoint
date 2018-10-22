@@ -10,9 +10,10 @@ preg_match('/([0-9a-zA-Z_\.]+)@/', $_POST['to'], $userMatch, PREG_OFFSET_CAPTURE
 
 if (count($receiptMatches)){
     $findUserIdquery = "SELECT ID FROM users WHERE userName='{$userMatch[1][0]}'";
-    $row = mysqli_query($sqrl, $findUserIdquery);
-    if(mysqli_num_rows($row) > 0){
-        $userId = mysqli_fetch_assoc($row);
+    $result = mysqli_query($sqrl, $findUserIdquery);
+    if(mysqli_num_rows($result) > 0){
+        $row = mysqli_fetch_assoc($result);
+        $userId = $row['ID'];
         $total = $receiptMatches[1][0];
         $totalFormatted = str_replace(',', '', $total);
         $totalFloat = (float) $totalFormatted;
