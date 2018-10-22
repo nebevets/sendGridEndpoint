@@ -13,7 +13,7 @@ if (count($receiptMatches)){
     $result = mysqli_query($sqrl, $findUserIdquery);
     if(mysqli_num_rows($result) > 0){
         $row = mysqli_fetch_assoc($result);
-        $userId = $row['ID'];
+        $userId = $row["ID"];
         $total = $receiptMatches[1][0];
         $totalFormatted = str_replace(',', '', $total);
         $totalFloat = (float) $totalFormatted;
