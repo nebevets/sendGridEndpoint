@@ -10,10 +10,6 @@ preg_match('/([0-9a-zA-Z_\.]+)@/', $_POST['to'], $userMatch, PREG_OFFSET_CAPTURE
 
 if (count($receiptMatches)){
     $findUserIdquery = "SELECT ID FROM users WHERE userName='{$userMatch[1][0]}'";
-    //if (!mysqli_query($link, "SET @a:='this will not work'")) {
-    //    printf("Error: %s\n", mysqli_error($link));
-    //}
-    //mysqli_free_result($result);
     if($result = mysqli_query($sqrl, $findUserIdquery)){
         $row = mysqli_fetch_assoc($result);
         $userId = $row["ID"];
