@@ -10,10 +10,13 @@ preg_match('/([0-9a-zA-Z_\.]+)@/', $_POST['to'], $userMatch, PREG_OFFSET_CAPTURE
 
 if (count($receiptMatches)){
     $findUserIdquery = "SELECT ID FROM users WHERE userName='{$userMatch[1][0]}'";
-    $result = mysqli_query($sqrl, $findUserIdquery);
-    if(mysqli_num_rows($result) > 0){
+    //if (!mysqli_query($link, "SET @a:='this will not work'")) {
+    //    printf("Error: %s\n", mysqli_error($link));
+    //}
+    //mysqli_free_result($result);
+    if($result = mysqli_query($sqrl, $findUserIdquery)){
         $row = mysqli_fetch_assoc($result);
-        $userId = 4;//$row["ID"];
+        $userId = $row["ID"];
         $total = $receiptMatches[1][0];
         $totalFormatted = str_replace(',', '', $total);
         $totalFloat = (float) $totalFormatted;
@@ -25,11 +28,16 @@ if (count($receiptMatches)){
                                     userId='${userId}',
                                     total='{$totalFloat}',
                                     storeName='{$receiptMatches[2][0]}',
-                                    date='{$dateFormatted}'";
-        mysqli_query($sqrl, $insertReceiptQuery);
+                                    purchaseDate='{$dateFormatted}'";
+        if (!mysqli_query($sqrl, $insertReceiptQuery)){
+            printf("Error: %s\n", mysqli_error($sqrl));
+        }
+    }else{
+        printf("Error: %s\n", mysqli_error($sqrl));
     }
+    mysqli_free_result($result);
 }else{
-    $working = 0;
+    $workingStatus = 0;
     $query = "INSERT INTO receivedEmail
                 SET
                     subject='{$_POST['subject']}',
@@ -41,9 +49,10 @@ if (count($receiptMatches)){
                     total='{$receiptMatches[1][0]}',
                     storeName='{$receiptMatches[2][0]}',
                     date='{$receiptMatches[3][0]}',
-                    workingRegEx='{$working}'";
-    //error_log('squirrellyQuery '.$query);
-    mysqli_query($connection, $query);
-    echo $query;
+                    workingRegEx='{$workingStatus}'";
+    if(!$result = mysqli_query($sendGrid, $query)){
+        printf("Error: %s\n", mysqli_error($sqrl), mysqli_connect_error());
+    }
+    mysqli_free_result($result);
 }
 ?>
