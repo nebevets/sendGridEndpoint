@@ -25,7 +25,8 @@ if (count($receiptMatches)){
                                     total='{$totalFloat}',
                                     storeName='{$receiptMatches[2][0]}',
                                     purchaseDate='{$dateFormatted}',
-                                    category='Other'";
+                                    category='Other',
+                                    comment='received via email'";
         if (!mysqli_query($sqrl, $insertReceiptQuery)){
             printf("Error: %s\n", mysqli_error($sqrl));
         }
